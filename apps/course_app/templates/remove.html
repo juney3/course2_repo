@@ -1,0 +1,26 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	{% load staticfiles %}
+      <!-- The line above tells Django to be ready to listen for static files -->
+	<link rel="stylesheet" href="{% static 'ourApp/css/main.css' %}"media="screen" title="no title"  charset="utf-8">
+	<title>Remove a Course</title>
+</head>
+
+<body>
+<h2>Are you sure you want to remove the following course?</h2>
+<h4>Name: {{course.name}}</h4>
+<h4>Description: {{description.description}}</h4>
+<form action="/" method="post">
+	{% csrf_token %}
+	<input type="submit" name="no" value="Back">
+</form>
+<form action="/delete/{{course.id}}" method="post">
+	{% csrf_token %}
+	<input type="submit" name="yes" value="Delete">
+</form>
+
+</body>
+</html>

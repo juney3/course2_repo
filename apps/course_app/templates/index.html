@@ -1,0 +1,66 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	{% load staticfiles %}
+      <!-- The line above tells Django to be ready to listen for static files -->
+	<link rel="stylesheet" href="{% static 'ourApp/css/main.css' %}"media="screen" title="no title"  charset="utf-8">
+	<title>Courses</title>
+</head>
+
+<body>
+<div id="add_course">
+	<h3>Add a new course</h3>
+	<form action="/add" method="post">
+		{% csrf_token %}
+		<label for="name">Name:</label>
+			<input type="text" name="name">
+		<label for="Description">Description</label>
+			<textarea name="description"></textarea>
+		<input type="submit" name="add" value="Add">
+	</form>
+</div>
+<div id="course_list">
+	<h3>Course</h3>
+		<table style="width:100%">
+			<tr>
+				<th>Course</th>
+				<th>Description</th> 
+				<th>Date Added</th>
+				<th>Actions</th>
+				<th>Comment</th>
+			</tr>
+			{% for course in courses %}
+				<tr>
+					<td>{{course.name}}</td>
+					{% for description in descriptions %}
+						{% if description.course == course %}
+					<td>	{{description.description}}</td>
+						{% endif %}
+					{% endfor %}
+					<td>{{course.created_at}}</td>
+					<td><a href="/remove/{{course.id}}">Remove</a>
+					</td>
+					<td>
+						<form action="/comment/{{course.id}}" method="post">
+							{% csrf_token %}
+							<textarea name="comment"></textarea>
+							<input type="submit" name="add" value="Comment">
+						</form>
+					</td>
+				</tr>
+					
+					{% for comment in comments %}
+						{% if comment.course == course %}
+						<tr>
+						<td>{{comment.comment}}<td>
+						</tr>
+						{% endif %}
+					{% endfor %}
+						
+			{% endfor %}
+			</table>
+</div>
+</body>
+</html>
